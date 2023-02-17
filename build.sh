@@ -1,0 +1,1 @@
+go build -o sql2python main.go
