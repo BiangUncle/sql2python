@@ -88,18 +88,18 @@ func Parse(filePath string) error {
 	if err != nil {
 		return err
 	}
-	//err = CreateFile(tableName, TmplProperties, dirName, stmt)
-	//if err != nil {
-	//	return err
-	//}
-	//err = CreateFile(tableName, BaseFileName, ModelDirName, stmt)
-	//if err != nil {
-	//	return err
-	//}
-	//err = CreateFile(tableName, ToolFileName, ModelDirName, stmt)
-	//if err != nil {
-	//	return err
-	//}
+	err = CreateFile(tableName, TmplProperties, dirName, stmt)
+	if err != nil {
+		return err
+	}
+	err = CreateFile(tableName, BaseFileName, ModelDirName, stmt)
+	if err != nil {
+		return err
+	}
+	err = CreateFile(tableName, ToolFileName, ModelDirName, stmt)
+	if err != nil {
+		return err
+	}
 	err = CreateFile(tableName, TFileName, ModelDirName, stmt)
 	if err != nil {
 		return err
