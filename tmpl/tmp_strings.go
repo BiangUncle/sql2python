@@ -157,8 +157,9 @@ import pandas as pd
 from model.{{.DDL.NewName.Name}}.properties import *
 from model._base import *
 
+{{$FuncName := s2t .DDL.NewName.Name}}
 
-class {{s2t .DDL.NewName.Name}}(Base):
+class {{$FuncName}}(Base):
 
     def __init__(self, db_name: str):
         super().__init__(db_name, Table_Name)
@@ -172,16 +173,16 @@ class {{s2t .DDL.NewName.Name}}(Base):
 
 
 
-__{{.DDL.NewName.Name}} = None
+__{{$FuncName}} = None
 
 
-def get_{{.DDL.NewName.Name}}() -> {{.DDL.NewName.Name}}:
-    global __{{.DDL.NewName.Name}}
+def get_{{.DDL.NewName.Name}}() -> {{$FuncName}}:
+    global __{{$FuncName}}
 
-    if __{{.DDL.NewName.Name}} is None:
-        __{{.DDL.NewName.Name}} = {{.DDL.NewName.Name}}(Default_DB_Name)
-        return __{{.DDL.NewName.Name}}
+    if __{{$FuncName}} is None:
+        __{{$FuncName}} = {{$FuncName}}(Default_DB_Name)
+        return __{{$FuncName}}
 
-    return __{{.DDL.NewName.Name}}
+    return __{{$FuncName}}
 
 `
