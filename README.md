@@ -12,3 +12,10 @@ python 转成sql工具类
 - m_yyy
 - tool
 - common
+
+
+### 发送文件到虚拟机
+
+```bash
+
+```
