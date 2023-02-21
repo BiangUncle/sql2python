@@ -136,18 +136,8 @@ func CreateFile(tableName string, tmplName string, dirName string, stmt sqlparse
 	fileName := ""
 
 	switch tmplName {
-	case TFileName:
+	case TFileName, MFileName:
 		fileName = fmt.Sprintf("%s/%s%s.py", dirName, tmplName, tableName)
-	case MFileName:
-		fileName = fmt.Sprintf("%s/%s%s.py", dirName, tmplName, tableName)
-		exist, err := HasDir(fileName)
-		if err != nil {
-			return err
-		}
-		if exist {
-			fmt.Println("m_ 文件已经存在")
-			return nil
-		}
 	default:
 		fileName = fmt.Sprintf("%s/%s.py", dirName, tmplName)
 	}
