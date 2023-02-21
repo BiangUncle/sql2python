@@ -14,6 +14,7 @@ const (
 	BaseFileName   = "_base"
 	ToolFileName   = "_tool"
 	TFileName      = "t_"
+	MFileName      = "m_"
 )
 
 const ModelDirName = "model/"
@@ -23,9 +24,11 @@ var TmplMap = map[string]string{
 	BaseFileName:   tmpl.BaseString,
 	ToolFileName:   tmpl.ToolString,
 	TFileName:      tmpl.TString,
+	MFileName:      tmpl.MString,
 }
 
 var FuncMap = map[string]interface{}{
+	"i2t": IdentFirstToUpper,
 	"s2t": StrFirstToUpper,
 }
 
@@ -52,8 +55,12 @@ func constructDriName(tableName string) string {
 	return fmt.Sprintf("%s%s/", ModelDirName, tableName)
 }
 
-func StrFirstToUpper(idt sqlparser.TableIdent) string {
+func IdentFirstToUpper(idt sqlparser.TableIdent) string {
 	str := idt.String()
+	return StrFirstToUpper(str)
+}
+
+func StrFirstToUpper(str string) string {
 	temp := strings.Split(str, "_")
 	var upperStr string
 	for y := 0; y < len(temp); y++ {
@@ -104,6 +111,10 @@ func Parse(filePath string) error {
 	if err != nil {
 		return err
 	}
+	err = CreateFile(tableName, MFileName, ModelDirName, stmt)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -127,6 +138,16 @@ func CreateFile(tableName string, tmplName string, dirName string, stmt sqlparse
 	switch tmplName {
 	case TFileName:
 		fileName = fmt.Sprintf("%s/%s%s.py", dirName, tmplName, tableName)
+	case MFileName:
+		fileName = fmt.Sprintf("%s/%s%s.py", dirName, tmplName, tableName)
+		exist, err := HasDir(fileName)
+		if err != nil {
+			return err
+		}
+		if exist {
+			fmt.Println("m_ 文件已经存在")
+			return nil
+		}
 	default:
 		fileName = fmt.Sprintf("%s/%s.py", dirName, tmplName)
 	}
