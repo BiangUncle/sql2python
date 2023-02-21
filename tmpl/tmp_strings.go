@@ -30,17 +30,17 @@ class Base:
 
     def get_db_info(self):
         return get_db_info(self._db_name)
-	
-	def get_field(self, db_where: dict, field_name: str):
+
+    def get_field(self, db_where: dict, field_name: str):
         df = self.query(db_where)
         if df.shape[0] <= 0:
             return None
-        
+
         if field_name not in df.columns:
             return None
-        
+
         return df.loc[0, field_name]
-	
+
 
 def get_db_info(database) -> dict:
     """
@@ -81,6 +81,7 @@ def execute(db_info: dict, sql: str):
 `
 
 const ToolString = `
+
 def construct_db_set(db_set) -> str:
 
     if len(db_set) == 0:
@@ -152,19 +153,39 @@ def construct_query_sql(table_name: str, columns=list, db_where=None, order_by='
     return sql
 
 
-def _exclude_keys(include_keys: list, conf: dict) -> dict:
+def _exclude_keys(include_keys: list, conf):
     """
     删除 conf 中，不包含 include_keys 的 key
-    
+
     :param include_keys: 包含的 key 列表
-    :param conf: 处理的配置的
+    :param conf: 处理的配置
     """
+    if type(conf) == list:
+        return __exclude_list_keys(include_keys, conf)
+
+    if type(conf) == dict:
+        return __exclude_conf_keys(include_keys, conf)
+
+    return conf
+
+
+def __exclude_list_keys(include_keys: list, conf: list) -> list:
+    new_conf = []
+    for v in conf:
+        if v in include_keys:
+            new_conf.append(v)
+
+    return new_conf
+
+
+def __exclude_conf_keys(include_keys: list, conf: dict) -> dict:
     new_conf = conf.copy()
     for k in conf.keys():
         if k not in include_keys:
             new_conf.pop(k)
 
     return new_conf
+
 `
 
 const PropertiesString = `
